@@ -6,7 +6,15 @@ class UserTest < ActiveSupport::TestCase
   # end
   def setup
    @user=User.new(name:"renuka",email:"renu@gmail.com",
-   password: "foobar", password_confirmation: "foobar")
+   password: "12345", password_confirmation: "12345")
+  end
+
+  test "associated microposts should be destroyed" do
+    @user.save
+    @user.microposts.create!(content: "Lorem ipsum")
+    assert_difference 'Micropost.count', -1 do
+      @user.destroy
+    end
   end
  
  test "should be valid" do
