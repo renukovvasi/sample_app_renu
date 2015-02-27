@@ -5,7 +5,7 @@ class UserTest < ActiveSupport::TestCase
   #   assert true
   # end
   def setup
-   @user=User.new(name:"renuka",email:"renu@gmail.com",
+   @user=User.new(name:"renuka",email:"renu.kovvasi@gmail.com",
    password: "12345", password_confirmation: "12345")
   end
 
@@ -73,5 +73,16 @@ class UserTest < ActiveSupport::TestCase
    test "authenticated? should return false for a user with nil digest" do
     assert_not @user.authenticated?(:remember, '')
    end
+
+  test "should follow and unfollow a user" do
+    michael = users(:michael)
+    archer  = users(:archer)
+    assert_not michael.following?(archer)
+    michael.follow(archer)
+    assert michael.following?(archer)
+     assert archer.followers.include?(michael)
+    michael.unfollow(archer)
+    assert_not michael.following?(archer)
+  end
 end
 
